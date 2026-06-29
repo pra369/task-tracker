@@ -39,7 +39,10 @@ const TaskForm = ({ editData, onClose }) => {
     setSubmitting(true);
     try {
       const payload = {
-        ...form,
+        title: form.title,
+        description: form.description,
+        status: form.status,
+        priority: form.priority,
         tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
         dueDate: form.dueDate || null,
       };
@@ -47,7 +50,7 @@ const TaskForm = ({ editData, onClose }) => {
       else await addTask(payload);
       onClose();
     } catch (err) {
-      const msg = err.response?.data?.message || 'Something went wrong';
+      const msg = err.response?.data?.message || err.message || 'Something went wrong';
       setErrors({ submit: msg });
     } finally {
       setSubmitting(false);
